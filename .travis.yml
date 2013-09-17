@@ -1,8 +1,11 @@
 language: php
 php:
-    - "5.3"
+    - "5.4"
 before_script:
     - composer install
     -  echo "USE mysql;\nUPDATE user SET password=PASSWORD('@p0q1o9w2') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
     - mysql -e 'create database dbtestes;'
 script: phpunit -c module/Application/tests/phpunit.xml
+
+notifications:
+    email: "daniel@danielchaves.com.br"
