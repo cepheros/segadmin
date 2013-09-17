@@ -18,7 +18,7 @@ abstract class CoreEntity implements InputFilterAwareInterface
 
     public function __construct()
     {
-        $this->$createdStamp = new DateTime();
+        $this->createdStamp = new \DateTime();
     }
 
     /**

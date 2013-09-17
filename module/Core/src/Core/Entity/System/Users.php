@@ -427,6 +427,8 @@ class Users extends CoreEntity
             )));
 
         }
+        
+        return $inputFilter;
     }
 
 }

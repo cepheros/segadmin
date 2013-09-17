@@ -120,6 +120,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         $this->entityManager = $this->getEntityManager();
         $this->dropDatabase();
         $this->createDatabase();
+        $this->createRoles();
+        $this->createResources();
+        $this->createPermissions();
     }
 
     protected function getModuleRoutes($moduleConfig)
@@ -182,7 +185,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      * Recupera o EntityManager dos testes
      * @return EntityManager
      */
-    private function getEntityManager()
+    protected function getEntityManager()
     {
         if ($this->entityManager) {
             return $this->entityManager;
@@ -220,6 +223,40 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function createResources()
     {
+        $resources = array(
+            'Application\Controller\Index.index',
+            'Application\Controller\Auth.index',
+            'Application\Controller\Auth.auth',
+        );
+
+        foreach ($resources as $resource) {
+            $res = new \Core\Entity\System\Resources();
+            $res->setResourceName($resource);
+            $res->setResourceDescription('Testes');
+            $this->getEntityManager()->persist($res);
+            $this->getEntityManager()->flush();
+        }
+
+    }
+
+    protected function createPermissions()
+    {
+        $permissions = array(
+            array('1','1','allow'),
+            array('1','2','allow'),
+            array('1','3','allow'),
+            array('2','4','allow'),
+        );
+
+        foreach ($permissions as $permission) {
+            $perm = new \Core\Entity\System\Permissions();
+            $perm->setIdRole($permission[0]);
+            $perm->setIdResource($permission[1]);
+            $perm->setPermission($permission[2]);
+            $this->getEntityManager()->persist($perm);
+            $this->getEntityManager()->flush();
+
+        }
 
     }
 }

@@ -4,8 +4,10 @@ php:
 before_script:
     - composer install
     - echo "USE mysql;\nUPDATE user SET password=PASSWORD('@p0q1o9w2') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
-    - mysql -e 'create database dbtestes;'
-script: phpunit -c module/Application/tests/phpunit.xml
+    - mysql -e 'create database segadmin_testes;'
+script: 
+    - phpunit -c module/Application/tests/phpunit.xml
+    - phpunit -c module/Core/tests/phpunit.xml
 
 notifications:
     email: "daniel@danielchaves.com.br"

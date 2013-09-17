@@ -30,11 +30,34 @@ class AuthController extends CoreController
 
     public function authAction()
     {
+        $request = $this->getRequest();
+        if(!$request->isPost()){
+            $this->redirect()->toUrl('/application/auth');
+        }
+        
+        $data = $request->getPost();
+        $service = $this->getService('Core\Service\Auth\System');
+        try{
+            $auth = $service->authenticate(
+                array(
+                    'userName' => $data['userName'],
+                    'password' => $data['password']
+                )
+            );
+            return $this->redirect()->toUrl('/application/dashboard');
+            
+        }catch (\Exception $e){
+            return $this->redirect()->toUrl('/application/auth/index/error/login');
+        }
+        
 
     }
 
     public function logoutAction()
     {
+        $service = $this->getService('Core\Service\Auth\System');
+        $auth = $service->logout();
+        return $this->redirect()->toUrl('/application/auth');
 
     }
 }
